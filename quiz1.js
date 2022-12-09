@@ -15,7 +15,6 @@ function maxvalue(arr){
         if(a<b) return 1;
         if(a===b) return 0;
     })
-    // console.log(arr);
     let max = arr[0];
     const result = {
         maxValue: max,
@@ -27,5 +26,3 @@ function maxvalue(arr){
 // 실행
 const a = maxvalue(array);
 console.log(a);
-console.log(a.maxValue);
-console.log(a.sortArr);

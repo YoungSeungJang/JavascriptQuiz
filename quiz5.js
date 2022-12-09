@@ -7,40 +7,6 @@
 
 
 
-
-// let distance;
-
-// const carFunction = {
-//     powerOnOff(){
-//         if(power === false){
-//             console.log('시동이 켜졌습니다');
-//             return power = true;
-//         }else{
-//             console.log('시동이 꺼졌습니다');
-//             return power = false;
-//         }
-//     },
-//     drive(movedist){
-//         if(distance === undefined){
-//             console.log('차 주행거리를 설정해주세요');
-//             return;
-//         }
-//         if(power === false) {
-//             console.log('시동이 걸리지 않으면 주행을 할 수 없습니다. ')
-//             return;
-//         }
-//         if(distance < movedist){
-//             console.log('목표거리보다 많이 움직일수 없습니다')
-//             return;
-//         }
-//         for(let i=0;i<movedist;i++){
-//             distance--;
-//             console.log(`최종목표까지 ${distance} 만큼 남았습니다.`);
-//         }
-//         if(distance === 0) console.log('최종목표 거리에 도달했습니다!')
-//     }
-// }
-
 // 초기에 차는 꺼져있는상태
 let power = false;
 let distance;
@@ -96,17 +62,14 @@ function car(dist){
     distance = dist;
     console.log(`설정한 주행거리는 ${dist} 입니다`)
 }
+
+
+// 실행
+
 car(41);
-carFunction.powerOnOff();
-car(30);
-carFunction.drive(10);
-carFunction.powerOnOff();
-carFunction.drive(10);
+
+car(39)
 carFunction.powerOnOff();
 carFunction.drive(10);
-carFunction.drive(15);
-carFunction.drive(5);
-carFunction.drive(5);
-
-
-
+carFunction.powerOnOff();
+carFunction.drive(29);

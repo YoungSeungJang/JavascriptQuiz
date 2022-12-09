@@ -20,5 +20,6 @@ function solution(arr){
     return result; 
 }
 
+// 실행
 const a = solution(arr);
 console.log(a);

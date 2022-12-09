@@ -9,12 +9,22 @@
 // 사물함 번호를 골라 비밀번호를 설정한다
 // 사물함이 사용중이면 중복사용 못한다
 // 사물함을 사용하려고하면 비밀번호를 입력 맞으면 사물함열림, 틀리면 비밀번호가 틀림
+
+// ==========================================================================================================
+
+
+// 빈 사물함배열 생성
 let locker = [];
+// 사물함관리 배열 생성
 let lockerManage = [];
+
+
+// 반복100번을통하여 push박스 함수 실행
 for(let i=0;i<100;i++){
     pushbox(i);
 }
 
+// 사물함객체를 만드는 함수
 function pushbox(i){
     const box = {
         number: i+1,
@@ -45,7 +55,7 @@ function lockerAssign(number, pw){
 }
 
 // 라커 이용 함수
-function locekrUse(number, pw){
+function lockerUse(number, pw){
     let index = lockerManage.findIndex((item)=>item.number === number);
     if(index === -1) return console.log('배정받지 않은 사물함입니다. 사물함배정 받은뒤에 이용해주세요');
     if(lockerManage[index].password === pw && lockerManage[index].number === number) return console.log(`${number}번 사물함이 열렸습니다!`);
@@ -65,15 +75,41 @@ function lockerRemove(number, pw){
 }
 
 
+
+// 라커현황 보여주기
 showLocker();
-lockerAssign(50, 1234);
-lockerAssign(40, 12);
+
+// 88번 014로 할당
+lockerAssign(88, 014);
+
+// 라커현황 보기(88은 없어야함)
 showLocker();
-lockerAssign(5, 1234);
+
+// 77, 66번 할당
+lockerAssign(77, 5678);
+lockerAssign(66, 5678);
+
+// 77, 66은없어야함
 showLocker();
-console.log(lockerManage);
-locekrUse(5, 1234);
-console.log(locker);
-lockerRemove(5, 1234);
-console.log(locker);
+
+// 사물함 이용 ! (배정받지 않은 사물함은 배정먼저 받아야함)!
+lockerUse(1, 000);
+
+// 사물함 이용!( 비밀번호가 일치해야한다, 일치하지않으면 사용불가)
+lockerUse(88, 000);
+
+// 일치하는 사물함이용
+lockerUse(88, 014);
+
+// 다쓴 사물함 반납(배정받지 않은 사물함은 배정먼저 받아야함)!
+lockerRemove(1, 014);
+
+// 다쓴 사물함 반납( 비밀번호가 일치해야한다, 일치하지않으면 사용불가))!
+lockerRemove(88, 000);
+
+// 일치하는 사물함 반납
+lockerRemove(88, 014);
+
+// 반납을 하고나면 현황에서 다시 쓸수있게 보여야함!
 showLocker();
+
