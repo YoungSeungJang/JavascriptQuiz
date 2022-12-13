@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      .content {
+        width: 1024px;
+      }
+
+      .disp {
+        height: 200px;
+        border: 1px solid black;
+      }
+
+      .tab_host {
+        display: flex;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .tab:hover {
+        cursor: pointer;
+      }
+
+      .tab {
+        width: 200px;
+        border: 1px solid #ededed;
+      }
+
+      #list {
+        border: 1px solid #ededed;
+      }
+
+      #te_input {
+        width: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <div class="disp" id="display">
+        <form>
+          <p>1.페이지가 로딩 될 때 이곳의 글씨를 변경하시오.</p>
+        </form>
+      </div>
+
+      <p>2.탭을 선택하면 선택한 탭의 배경과 글자의색이 바뀌도록 하시오</p>
+      <div class="tab_host">
+        <div class="tab" onclick="secondEvent(this)">탭1</div>
+        <div class="tab" onclick="secondEvent(this)">탭2</div>
+        <div class="tab" onclick="secondEvent(this)">탭3</div>
+        <div class="tab" onclick="secondEvent(this)">탭4</div>
+        <div class="tab" onclick="secondEvent(this)">탭5</div>
+      </div>
+
+      <p>3. 위의 탭 클릭시 아래의 컨텐츠중 탭과 숫자가 같은 것만 보이게 하시오.</p>
+      <div class="tab_body">
+        <div class="block">탭1 컨텐츠</div>
+        <div class="block">탭3 컨텐츠</div>
+        <div class="block">탭2 컨텐츠</div>
+        <div class="block">탭5 컨텐츠</div>
+        <div class="block">탭4 컨텐츠</div>
+      </div>
+      <p>
+        4. 아래의 입력창에 숫자가 입력되지 않도록 하고 길이 제한은 10자로 하시오. <br />숫자가
+        입력된다면 숫자가 입력되었다고 alert로 알려주시오
+      </p>
+      <input type="text" id="te_input" maxlength="9" placeholder="글자만 입력하세요." onkeypress="noNumber(this)"/>
+
+      <p>
+        5.아래의 입력창에 입력 후 저장 버튼을 누르거나 엔터키를 누르면 입력한 내용이 아래의 list에
+        추가 되도록 하시오. <br />초기화 버튼을 누르면 list안의 모든 내용이 지워져야 함
+      </p>
+      <h5>6.추가된 내용을 수정할 수 있게 변경하시오.</h5>
+      <form id="form">
+        <input type="text" value='' width="600" id="list_data" name="content" />
+        <button type="submit" id="send" value="show_view"  onclick="saveDOM()" >저장</button>
+        <button onclick="reset_list()" type="reset">초기화</button>
+        <p>리스트</p>
+        <ul id="list">
+          <li class="liclass">list</li>
+          <li class="liclass">list</li>
+        </ul>
+      </form>
+    </div>
+    <script>
+      // 1번
+      const $firstQuiz = document.querySelector('form>p');
+      $firstQuiz.setAttribute('style', 'font-family:Times New Roman');
+      $firstQuiz.innerHTML = '글씨변경 font-family:Times New  Roman';
+
+      // 2번
+      const $secondQuiz = document.querySelector('.tab_host');
+      function secondEvent(event) {
+        [...event.parentElement.children].forEach((item) => {
+          if (item === event) {
+            item.style.backgroundColor = '#9C9EFE';
+            item.style.color = 'white';
+            const text = item.innerText+' 컨텐츠'
+            // 3번 함수 호출
+            displayNone(text);
+          } else {
+            item.removeAttribute('style');
+          }
+        });
+        
+      }
+      // 3번
+      const $thirdQuiz = document.querySelector('.tab_body');
+      function displayNone(text){
+        [...$thirdQuiz.children].forEach((item)=>{
+          if(text === item.innerText) {
+            // 왜 visibility를 활용하면 안되는지 모르겠음
+            item.style.visibility = 'visible';
+            // item.style.display = 'block';
+          }else{
+            // 왜 visibility를 활용하면 안되는지 모르겠음
+            item.style.visibility = 'hidden';
+            // item.style.display = 'none';
+          }
+        })
+      }
+      // 4번
+      function noNumber(){
+        const {key, keyCode} = event;
+        if(keyCode>47 && keyCode<58){
+          event.returnValue = false;
+          alert('숫자가 입력 되였습니다')
+          document.getElementById('te_input').value = '';     
+        }
+      }
+
+      // 5번
+      function saveDOM(){
+        const inputText = document.getElementById('list_data').value;                                                      
+        // 콘솔로그를 찍으면 누르자마자 그냥 사라짐(?) 추측하기를 저장버튼을 누르면서 input의 value가 없어져버리는현상 때문인가 생각중...
+        // console.log(inputText);
+        const $li = document.createElement('li');
+        const text = document.createTextNode(inputText);
+        
+        $li.appendChild(text);
+        const $list = document.getElementById('list');
+        $list.appendChild($li);
+      }
+    </script>
+  </body>
+</html>
