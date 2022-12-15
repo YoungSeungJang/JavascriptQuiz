@@ -75,7 +75,7 @@
       <h5>6.추가된 내용을 수정할 수 있게 변경하시오.</h5>
       <form id="form">
         <input type="text" value='' width="600" id="list_data" name="content" />
-        <button type="submit" id="send" value="show_view"  onclick="saveDOM()" >저장</button>
+        <button type="submit" id="send" value="show_view"  onclick="saveDOM(this)" >저장</button>
         <button onclick="reset_list()" type="reset">초기화</button>
         <p>리스트</p>
         <ul id="list">
@@ -85,6 +85,7 @@
       </form>
     </div>
     <script>
+      
       // 1번
       const $firstQuiz = document.querySelector('form>p');
       $firstQuiz.setAttribute('style', 'font-family:Times New Roman');
@@ -97,29 +98,29 @@
           if (item === event) {
             item.style.backgroundColor = '#9C9EFE';
             item.style.color = 'white';
-            const text = item.innerText+' 컨텐츠'
+            const text = item.innerText + ' 컨텐츠'
+            console.log(text);
             // 3번 함수 호출
-            displayNone(text);
+            visibleHidden(text);
           } else {
             item.removeAttribute('style');
           }
         });
         
       }
+
       // 3번
       const $thirdQuiz = document.querySelector('.tab_body');
-      function displayNone(text){
-        [...$thirdQuiz.children].forEach((item)=>{
-          if(text === item.innerText) {
-            // 왜 visibility를 활용하면 안되는지 모르겠음
-            item.style.visibility = 'visible';
-            // item.style.display = 'block';
-          }else{
-            // 왜 visibility를 활용하면 안되는지 모르겠음
-            item.style.visibility = 'hidden';
-            // item.style.display = 'none';
+      function visibleHidden(text){
+        for(let el of $thirdQuiz.children){
+          if(el.innerHTML === text){
+            el.style.visibility = 'visible';
           }
-        })
+          else {
+            el.style.visibility = 'hidden';
+          }
+        }
+     
       }
       // 4번
       function noNumber(){
@@ -132,7 +133,8 @@
       }
 
       // 5번
-      function saveDOM(){
+      function saveDOM(event){
+        event.parent.preventDefault();
         const inputText = document.getElementById('list_data').value;                                                      
         // 콘솔로그를 찍으면 누르자마자 그냥 사라짐(?) 추측하기를 저장버튼을 누르면서 input의 value가 없어져버리는현상 때문인가 생각중...
         // console.log(inputText);
@@ -143,6 +145,7 @@
         const $list = document.getElementById('list');
         $list.appendChild($li);
       }
+
     </script>
   </body>
 </html>
