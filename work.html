@@ -66,7 +66,13 @@
         4. 아래의 입력창에 숫자가 입력되지 않도록 하고 길이 제한은 10자로 하시오. <br />숫자가
         입력된다면 숫자가 입력되었다고 alert로 알려주시오
       </p>
-      <input type="text" id="te_input" maxlength="9" placeholder="글자만 입력하세요." onkeypress="noNumber(this)"/>
+      <input
+        type="text"
+        id="te_input"
+        maxlength="9"
+        placeholder="글자만 입력하세요."
+        onkeypress="noNumber(this)"
+      />
 
       <p>
         5.아래의 입력창에 입력 후 저장 버튼을 누르거나 엔터키를 누르면 입력한 내용이 아래의 list에
@@ -74,8 +80,8 @@
       </p>
       <h5>6.추가된 내용을 수정할 수 있게 변경하시오.</h5>
       <form id="form">
-        <input type="text" value='' width="600" id="list_data" name="content" />
-        <button type="submit" id="send" value="show_view"  onclick="saveDOM(this)" >저장</button>
+        <input type="text" value="" width="600" id="list_data" name="content" />
+        <button type="submit" id="send" value="show_view" onclick="saveDOM(this)">저장</button>
         <button onclick="reset_list()" type="reset">초기화</button>
         <p>리스트</p>
         <ul id="list">
@@ -85,67 +91,96 @@
       </form>
     </div>
     <script>
-      
       // 1번
       const $firstQuiz = document.querySelector('form>p');
       $firstQuiz.setAttribute('style', 'font-family:Times New Roman');
       $firstQuiz.innerHTML = '글씨변경 font-family:Times New  Roman';
 
       // 2번
-      const $secondQuiz = document.querySelector('.tab_host');
+      // const $secondQuiz = document.querySelector('.tab_host');
       function secondEvent(event) {
         [...event.parentElement.children].forEach((item) => {
           if (item === event) {
             item.style.backgroundColor = '#9C9EFE';
             item.style.color = 'white';
-            const text = item.innerText + ' 컨텐츠'
-            console.log(text);
+            const text = item.innerText + ' 컨텐츠';
             // 3번 함수 호출
             visibleHidden(text);
           } else {
             item.removeAttribute('style');
           }
         });
-        
       }
 
       // 3번
       const $thirdQuiz = document.querySelector('.tab_body');
-      function visibleHidden(text){
-        for(let el of $thirdQuiz.children){
-          if(el.innerHTML === text){
+      function visibleHidden(text) {
+        for (let el of $thirdQuiz.children) {
+          if (el.innerHTML === text) {
             el.style.visibility = 'visible';
-          }
-          else {
+          } else {
             el.style.visibility = 'hidden';
           }
         }
-     
       }
       // 4번
-      function noNumber(){
-        const {key, keyCode} = event;
-        if(keyCode>47 && keyCode<58){
+      function noNumber() {
+        const { key, keyCode } = event;
+        if (key >= 1 && key <= 9) {
           event.returnValue = false;
-          alert('숫자가 입력 되였습니다')
-          document.getElementById('te_input').value = '';     
+          alert('숫자가 입력 되였습니다');
+          document.getElementById('te_input').value = '';
         }
       }
 
       // 5번
-      function saveDOM(event){
-        event.parent.preventDefault();
-        const inputText = document.getElementById('list_data').value;                                                      
-        // 콘솔로그를 찍으면 누르자마자 그냥 사라짐(?) 추측하기를 저장버튼을 누르면서 input의 value가 없어져버리는현상 때문인가 생각중...
-        // console.log(inputText);
-        const $li = document.createElement('li');
-        const text = document.createTextNode(inputText);
-        
-        $li.appendChild(text);
-        const $list = document.getElementById('list');
-        $list.appendChild($li);
+      
+      const $form = document.getElementById('form');
+      const $list = document.getElementById('list');
+      const $textInput = document.querySelector('[name="content"]');
+
+      function parentPaint(node, text) {
+        const editBtn = `<button type='button' onClick='onEdit(this)'>수정</button>`;
+        const delBtn = `<button type='button' onClick='onRemove(this)'>삭제</button>`;
+        node.innerHTML = text + editBtn + delBtn;
       }
 
+      // 5번 저장
+      function createList(e) {
+        e.preventDefault();
+        if ($textInput.value === '') return;
+        const li = document.createElement('li');
+        parentPaint(li, $textInput.value);
+        $list.append(li);
+        $textInput.value = '';
+      }
+      $form.addEventListener('submit', createList);
+
+      // 5번 초기화
+      function reset_list() {
+        $list.innerHTML = '';
+      }
+
+      // 6번 수정
+      function onEdit(e) {
+        const parentList = e.parentNode;
+        const parentText = e.parentNode.childNodes[0];
+        console.log(parentList, parentText);
+        parentList.innerHTML = `<input value='${parentText.data}'/><button type='button' onClick='onSave(this)'>저장</button>`;
+      }
+
+      // 6번 저장
+      function onSave(e) {
+        const parentList = e.parentNode;
+        const editTextValue = parentList.childNodes[0].value;
+        parentPaint(parentList, editTextValue);
+      }
+
+      // 6번 삭제
+      function onRemove(e) {
+        const parentNode = e.parentNode;
+        parentNode.remove();
+      }
     </script>
   </body>
 </html>
